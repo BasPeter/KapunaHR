@@ -1,0 +1,23 @@
+{
+  "name": "kapunapd",
+  "version": "1.0.0",
+  "description": "light-weight PD for kapuna uses",
+  "main": "dist/electron-app.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && electron ./dist/electron-app.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BasPeter/KapunaPD.git"
+  },
+  "author": "Bas Peter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BasPeter/KapunaPD/issues"
+  },
+  "homepage": "https://github.com/BasPeter/KapunaPD#readme",
+  "devDependencies": {
+    "electron": "^8.2.1"
+  }
+}
