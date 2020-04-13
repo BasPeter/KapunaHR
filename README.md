@@ -1,2 +1,2 @@
-# KapunaPD
-A light-weight
+# KapunaHR
+A light-weight health record for kapuna uses.

@@ -1,22 +1,22 @@
 {
-  "name": "kapunapd",
-  "version": "1.0.0",
-  "description": "light-weight PD for kapuna uses",
+  "name": "kapunahr",
+  "version": "1.0.1",
+  "description": "light-weight health record for kapuna uses.",
   "main": "dist/electron-app.ts",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && electron ./dist/electron-app.js "
+    "start": "npm run build && electron ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BasPeter/KapunaPD.git"
+    "url": "git+https://github.com/BasPeter/KapunaHR.git"
   },
   "author": "Bas Peter",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/BasPeter/KapunaPD/issues"
+    "url": "https://github.com/BasPeter/KapunaHR/issues"
   },
-  "homepage": "https://github.com/BasPeter/KapunaPD#readme",
+  "homepage": "https://github.com/BasPeter/KapunaHR#readme",
   "devDependencies": {
     "electron": "^8.2.1"
   }
