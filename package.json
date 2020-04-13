@@ -2,7 +2,7 @@
   "name": "kapunahr",
   "version": "1.0.1",
   "description": "light-weight health record for kapuna uses.",
-  "main": "dist/electron-app.ts",
+  "main": "dist/electron-app.js",
   "scripts": {
     "build": "tsc",
     "start": "npm run build && electron ."
