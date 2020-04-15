@@ -1,0 +1,27 @@
+.container {
+  background-color: #2C302E;
+  height: 100vh;
+  padding: 1rem;
+
+  .title {
+    color: white;
+  }
+
+  .databases {
+    margin-top: 1rem;
+
+    .database {
+      background-color: #909590;
+      color: white;
+
+      border-radius: 2px;
+
+      width: 180px;
+      height: 100px;
+
+      &:hover {
+        background-color: #AEB1AE;
+      }
+    }
+  }
+}

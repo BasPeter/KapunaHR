@@ -1,10 +1,11 @@
-import { app, BrowserWindow, screen } from 'electron';
+import {app, BrowserWindow, screen} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
 let win: BrowserWindow = null;
+let db: BrowserWindow = null;
 const args = process.argv.slice(1),
-    serve = args.some(val => val === '--serve');
+  serve = args.some(val => val === '--serve');
 
 function createWindow(): BrowserWindow {
 
@@ -13,13 +14,21 @@ function createWindow(): BrowserWindow {
 
   // Create the browser window.
   win = new BrowserWindow({
-    x: 0,
-    y: 0,
-    width: size.width,
-    height: size.height,
+    width: size.width / 2,
+    height: size.height / 2,
     webPreferences: {
       nodeIntegration: true,
-      allowRunningInsecureContent: (serve) ? true : false,
+      allowRunningInsecureContent: (serve),
+    },
+  });
+
+  db = new BrowserWindow({
+    title: 'Kapuna Database',
+    width: 600,
+    height: 800,
+    webPreferences: {
+      nodeIntegration: true,
+      allowRunningInsecureContent: (serve),
     },
   });
 
@@ -27,10 +36,16 @@ function createWindow(): BrowserWindow {
     require('electron-reload')(__dirname, {
       electron: require(`${__dirname}/node_modules/electron`)
     });
-    win.loadURL('http://localhost:4200');
+    win.loadURL('http://localhost:4200/');
+    db.loadURL('http://localhost:4200/#/database')
   } else {
     win.loadURL(url.format({
       pathname: path.join(__dirname, 'dist/index.html'),
+      protocol: 'file:',
+      slashes: true
+    }));
+    db.loadURL(url.format({
+      pathname: path.join(__dirname, 'dist/index.html/#/database'),
       protocol: 'file:',
       slashes: true
     }));
@@ -46,6 +61,7 @@ function createWindow(): BrowserWindow {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null;
+    db = null;
   });
 
   return win;
