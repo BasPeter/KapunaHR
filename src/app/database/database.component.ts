@@ -1,24 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import {BaseDatabase} from "./base-database/baseDatabase";
-import {Patient} from "./database-models/Patient";
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Database} from "./database/database";
+import {DatabaseService} from "./database/database.service";
 
 @Component({
   selector: 'app-database',
   templateUrl: './database.component.html',
   styleUrls: ['./database.component.scss']
 })
-export class DatabaseComponent implements OnInit {
+export class DatabaseComponent implements AfterViewInit {
 
-  Patients: BaseDatabase;
+  selectedDatabase: Database<any>;
+  log;
 
-  constructor() {
-    this.Patients = new BaseDatabase('patients', Patient)
+  constructor(public databaseService: DatabaseService) {
   }
 
-  ngOnInit(): void {
-    console.log('Hello World! database component')
+  ngAfterViewInit(): void {
+    this.log = this.databaseService.log.documenten;
+    console.log(this.log);
+  }
 
-    this.Patients.create()
+  createPatient() {
+    const patient = {
+      _id: 'Patient_006',
+      name: 'John Smith',
+      ziekenhuisOpnameIds: []
+    };
+
+    this.databaseService.patienten.create(patient);
   }
 
 }

@@ -1,12 +1,53 @@
-<div class="container" fxLayout="column">
+<div class="container" fxLayout="column" fxLayoutGap="16px">
   <h1 class="title">Database</h1>
 
-  <div class="databases" fxLayout="row" fxFlex>
-    <div class="database patients" fxLayoutAlign="start center" fxLayout="column">
-      <h3 class="title">Patients</h3>
-      <div># Documenten</div>
+  <div class="databases" fxLayout="row" fxLayoutGap="8px">
+    <div *ngFor="let database of databaseService.databases" class="database"
+         fxFlex fxLayoutAlign="start center" fxLayout="column"
+         (click)="selectedDatabase = database">
+      <h3 class="title">{{database.name | titlecase}}</h3>
+      <!--      <div>{{database.total_rows | async}} Documenten</div>-->
     </div>
   </div>
 
+  <button fxFlex="50px" (click)="createPatient()">Create Patient</button>
 
+  <div class="database-log" fxFlex fxLayout="column" fxLayoutGap="4px">
+    <h3>Log</h3>
+      {{(log | async)?.length}}
+    <div class="log-item" *ngFor="let logItem of (log | async)">
+
+      <ng-container *ngIf="logItem.doc.type === 'error'">
+
+        <div class="error-log" fxLayout="column">
+
+          <div class="log-header" fxLayout="row" fxLayoutGap="8px">
+            <span><strong>{{logItem.doc.message.status}}</strong></span>
+            <span>{{logItem.doc.message.name}}</span>
+            <div fxFlex class="fill-remaining-space"></div>
+            <span>{{logItem.doc.timeStamp | date: 'dd MMM yyyy - HH:mm:ss'}}</span>
+          </div>
+
+          <span class="log-message">{{logItem.doc.message.docId}}: {{logItem.doc.message.message}}</span>
+
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="logItem.doc.type === 'success'">
+
+        <div class="success-log" fxLayout="column">
+
+          <div class="log-header" fxLayout="row" fxLayoutGap="8px">
+            <span><strong>{{logItem.doc.database}}:</strong> {{logItem.doc.mutation | titlecase}}</span>
+            <div fxFlex class="fill-remaining-space"></div>
+            <span>{{logItem.doc.timeStamp | date: 'dd MMM yyyy - HH:mm:ss'}}</span>
+          </div>
+
+          <span>Ok: {{logItem.doc.message.ok}}</span>
+        </div>
+      </ng-container>
+
+
+    </div>
+  </div>
 </div>

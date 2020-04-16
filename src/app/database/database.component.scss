@@ -16,11 +16,38 @@
 
       border-radius: 2px;
 
-      width: 180px;
       height: 100px;
 
       &:hover {
         background-color: #AEB1AE;
+      }
+    }
+  }
+
+
+  .database-log {
+    height: auto;
+    color: white;
+
+    overflow-y: scroll;
+
+    .log-item {
+      .error-log {
+        border: #A7222D solid 2px;
+        border-radius: 2px;
+        color: #2E0A0D;
+        background-color: #E79BA1;
+        padding: 4px;
+      }
+      .success-log {
+        border: #403F4C solid 2px;
+        border-radius: 2px;
+        color: #121215;
+        background-color: #A8A7AD;
+        padding: 4px;
+      }
+      .log-header {
+        font-size: 20px;
       }
     }
   }

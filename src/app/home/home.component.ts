@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {DatabaseService} from "../database/database/database.service";
 
 @Component({
   selector: 'app-home',

@@ -14,8 +14,8 @@ function createWindow(): BrowserWindow {
 
   // Create the browser window.
   win = new BrowserWindow({
-    width: size.width / 2,
-    height: size.height / 2,
+    width: 600,
+    height: 400,
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve),
