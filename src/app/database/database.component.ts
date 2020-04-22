@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Database} from "./database/database";
 import {DatabaseService} from "./database/database.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-database',
@@ -9,20 +10,22 @@ import {DatabaseService} from "./database/database.service";
 })
 export class DatabaseComponent implements AfterViewInit {
 
-  selectedDatabase: Database<any>;
-  log;
+  selectedDatabase: Database<any> | 'log' = this.databaseService.databases[0];
+  log: Observable<any>
 
   constructor(public databaseService: DatabaseService) {
   }
 
   ngAfterViewInit(): void {
-    this.log = this.databaseService.log.documenten;
-    console.log(this.log);
+    this.log = this.databaseService.log.documenten$;
+  }
+
+  getObjectEntries(obj: Object) {
+    return Object.entries(obj);
   }
 
   createPatient() {
     const patient = {
-      _id: 'Patient_006',
       name: 'John Smith',
       ziekenhuisOpnameIds: []
     };

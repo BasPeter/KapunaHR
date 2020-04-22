@@ -12,6 +12,11 @@
 
     .database {
       background-color: #909590;
+
+      &.selected {
+        background-color: #3C493F;
+      }
+
       color: white;
 
       border-radius: 2px;
@@ -19,8 +24,10 @@
       height: 100px;
 
       &:hover {
-        background-color: #AEB1AE;
+        transform: translateY(-2px);
       }
+
+      transition: transform .2s ease;
     }
   }
 
@@ -48,6 +55,17 @@
       }
       .log-header {
         font-size: 20px;
+      }
+    }
+
+    .document {
+      padding: 4px;
+      border: 1px solid white;
+
+      table {
+        border-collapse: collapse;
+        td, tr {
+        }
       }
     }
   }

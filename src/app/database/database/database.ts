@@ -1,6 +1,6 @@
 // @ts-ignore
 import PouchDB from 'pouchdb';
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {ErrorMessage, SuccesMessage} from "../database-models/Messages";
 
 export class Database<T> {
@@ -9,40 +9,55 @@ export class Database<T> {
   db: any;
 
   private _messages$: Subject<SuccesMessage | ErrorMessage> = new Subject();
-  get messages$() {
+  get messages$(): Observable<any> {
     return this._messages$.asObservable()
   }
 
-
-  get total_rows(): Promise<number> {
-    return this.db.allDocs().then(result => result.total_rows).catch(err => console.log(err));
+  private _documenten$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  get documenten$(): Observable<any> {
+    return this._documenten$.asObservable();
   }
 
-  private _documenten: Subject<T> = new Subject<T>();
-  get documenten(): Promise<T> {
-    return this.db.allDocs({include_docs: true}).then(result => result.rows);
+  private get idFactory() {
+    return new Date(Date.now());
   }
 
   constructor(name: string) {
     this.name = name;
     this.db = new PouchDB(name);
+
+    // this.db.destroy();
+
+    // fill documenten$ with initial data;
+    this.db.allDocs({include_docs: true, descending: true}).then(result => {
+      this._documenten$.next(result);
+    });
+
+    // subscribe to database changes. expose them on documenten$
+    this.db.changes({live: true, since: 'now'})
+      .on('change', (change) => {
+        this.db.allDocs({include_docs: true, descending: true}).then(result => this._documenten$.next(result));
+      })
+      .catch(err => console.log(err));
   }
 
   create(document: T) {
-    this.db.put(document)
+    const doc = {_id: this.idFactory, ...document};
+    console.log(doc);
+    this.db.put(doc)
       .then(response => {
         const message = {
           type: 'success',
           mutation: 'create',
           database: this.name,
-          timeStamp: new Date(Date.now()),
           message: response,
         };
         this._messages$.next(message)
       })
       .catch(err => {
-      this._messages$.next({type: 'error', timeStamp: new Date(Date.now()), message: err})
-    })
+        console.log(err);
+        this._messages$.next({type: 'error', message: err})
+      })
   }
 }
 
