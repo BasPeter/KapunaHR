@@ -2,6 +2,7 @@
 import PouchDB from 'pouchdb';
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {ErrorMessage, SuccesMessage} from "../database-models/Messages";
+import {first, map} from "rxjs/operators";
 
 export class Database<T> {
 

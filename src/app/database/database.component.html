@@ -1,80 +1,25 @@
-<div class="container" fxLayout="column" fxLayoutGap="16px">
-  <h1 class="title">Database</h1>
+<section fxLayout="column" fxLayoutGap="8px">
+  <mat-toolbar>
+    Kapuna MaData
+  </mat-toolbar>
 
-  <div class="databases" fxLayout="row" fxLayoutGap="8px">
-    <div class="database"
-         [ngClass]="{'selected': selectedDatabase === 'log'}"
-         fxFlex fxLayoutAlign="start center" fxLayout="column"
-         (click)="selectedDatabase = 'log'">
-      <h3 class="title">Log</h3>
-    </div>
-    <div *ngFor="let database of databaseService.databases" class="database"
-         [ngClass]="{'selected': selectedDatabase===database}"
-         fxFlex fxLayoutAlign="start center" fxLayout="column"
-         (click)="selectedDatabase = database">
-      <h3 class="title">{{database.name | titlecase}}</h3>
-    </div>
-  </div>
+  <div class="documents">
+    <ng-container *ngFor="let document of (databaseService.patientCollection?.documenten$ | async).rows">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{document.doc.first_name + ' ' + document.doc.last_name}}
+          </mat-panel-title>
+          <mat-panel-description>
+            Patient Document
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-  <button fxFlex="50px" (click)="createPatient()">Create Patient</button>
+        <pre>{{document.doc | json}}</pre>
 
-  <div class="database-log database-documents" fxFlex fxLayout="column" fxLayoutGap="4px">
-
-    <ng-container *ngIf="selectedDatabase==='log'; else documenten">
-      <div class="log-item" *ngFor="let logItem of (log | async)?.rows">
-
-        <ng-container *ngIf="logItem.doc.type === 'error'">
-
-          <div class="error-log" fxLayout="column">
-
-            <div class="log-header" fxLayout="row" fxLayoutGap="8px">
-              <span><strong>{{logItem.doc.message.status}}</strong></span>
-              <span>{{logItem.doc.message.name}}</span>
-              <div fxFlex class="fill-remaining-space"></div>
-              <span>{{logItem.doc._id | date: 'dd MMM yyyy - HH:mm:ss'}}</span>
-            </div>
-
-            <span class="log-message">{{logItem.doc.message.docId}}: {{logItem.doc.message.message}}</span>
-
-          </div>
-        </ng-container>
-
-        <ng-container *ngIf="logItem.doc.type === 'success'">
-
-          <div class="success-log" fxLayout="column">
-
-            <div class="log-header" fxLayout="row" fxLayoutGap="8px">
-              <span><strong>{{logItem.doc.database}}:</strong> {{logItem.doc.mutation | titlecase}}</span>
-              <div fxFlex class="fill-remaining-space"></div>
-              <span>{{logItem.doc._id | date: 'dd MMM yyyy - HH:mm:ss'}}</span>
-            </div>
-
-            <span>Ok: {{logItem.doc.message.ok}}</span>
-
-          </div>
-        </ng-container>
-
-
-      </div>
+      </mat-expansion-panel>
+    </mat-accordion>
     </ng-container>
-
-
-    <ng-template #documenten>
-      <h3>{{selectedDatabase.name}}</h3>
-      <div fxLayout="column" fxLayoutGap="4px">
-        <div class="document" *ngFor="let document of (selectedDatabase.documenten$ | async)?.rows">
-          <div fxLayout="column">
-          <span *ngFor="let entry of getObjectEntries(document.doc)">
-            <table fxFlex>
-              <tr>
-                <td fxFlex="30%">{{entry[0] + ': '}}</td>
-                <td fxFlex>{{entry[1]}}</td>
-              </tr>
-            </table>
-          </span>
-        </div>
-        </div>
-      </div>
-    </ng-template>
   </div>
-</div>
+</section>

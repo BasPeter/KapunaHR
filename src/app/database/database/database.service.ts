@@ -1,19 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Database} from "./database";
 import {Patient} from "../database-models/Patient";
-import {ZiekenhuisOpname} from "../database-models/ZiekenhuisOpname";
-import {merge, Observable, Subject} from "rxjs";
+import {Subject} from "rxjs";
 import {ErrorMessage, SuccesMessage} from "../database-models/Messages";
-import {Diagnose} from "../database-models/Diagnose";
+import {CareType} from "../database-models/CareType";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatabaseService {
 
-  patienten: Database<Patient>;
-  ziekenhuisOpnames: Database<ZiekenhuisOpname>;
-  diagnoses: Database<Diagnose>;
+  patientCollection: Database<Patient>;
 
   log: Database<SuccesMessage | ErrorMessage>;
   private _logChanges: Subject<any> = new Subject<any>();
@@ -27,11 +24,31 @@ export class DatabaseService {
     this.log = new Database('log');
     // this.log.db.changes({since: '0', include_docs: true}).then(changes => console.log(changes));
 
-    this.patienten = new Database('patienten');
-    this.ziekenhuisOpnames = new Database('ziekenhuisOpnames');
-    this.diagnoses = new Database('diagnoses');
+    this.patientCollection = new Database('patientCollection');
 
-    this.databases = [this.patienten, this.ziekenhuisOpnames, this.diagnoses];
+    // this.patientCollection.create(
+    //   {
+    //     first_name: 'Elon',
+    //     last_name: 'Musk',
+    //     age: 12,
+    //     careList: [
+    //       {
+    //         type: CareType.OUTPATIENT,
+    //         admission: new Date(Date.now() - 50000),
+    //         discharge: null,
+    //         discharge_reason: null,
+    //         diagnosis: [{
+    //           primary_diagnosis: 'cough',
+    //           description: 'Probably Corona.'
+    //         }]
+    //       }
+    //     ],
+    //     home_village: 'San Fransisco',
+    //     village_currently_living: 'Mars'
+    //   }
+    // );
+
+    this.databases = [this.patientCollection];
 
     this.databases.forEach(database => {
       // Subscribe log database to log messages of other databases

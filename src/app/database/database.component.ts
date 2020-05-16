@@ -10,27 +10,17 @@ import {Observable} from "rxjs";
 })
 export class DatabaseComponent implements AfterViewInit {
 
-  selectedDatabase: Database<any> | 'log' = this.databaseService.databases[0];
-  log: Observable<any>
+  log: Observable<any>;
+
 
   constructor(public databaseService: DatabaseService) {
   }
 
   ngAfterViewInit(): void {
     this.log = this.databaseService.log.documenten$;
-  }
 
-  getObjectEntries(obj: Object) {
-    return Object.entries(obj);
-  }
 
-  createPatient() {
-    const patient = {
-      name: 'John Smith',
-      ziekenhuisOpnameIds: []
-    };
-
-    this.databaseService.patienten.create(patient);
+    // this.databaseService.patientCollection.documenten$.subscribe(collection => console.log(collection));
   }
 
 }
