@@ -28,23 +28,27 @@ export class DatabaseService {
 
     // this.patientCollection.create(
     //   {
-    //     first_name: 'Elon',
-    //     last_name: 'Musk',
-    //     age: 12,
+    //     first_name: 'Jakkie',
+    //     last_name: 'Pakkie',
+    //     age: 17,
     //     careList: [
     //       {
-    //         type: CareType.OUTPATIENT,
-    //         admission: new Date(Date.now() - 50000),
+    //         type: CareType.INPATIENT,
+    //         admission: new Date(Date.now() - 7000),
     //         discharge: null,
     //         discharge_reason: null,
     //         diagnosis: [{
-    //           primary_diagnosis: 'cough',
-    //           description: 'Probably Corona.'
-    //         }]
+    //           primary_diagnosis: 'pregnant',
+    //           description: 'Heel lief kind.'
+    //         },
+    //           {
+    //             primary_diagnosis: 'angst voor Bassies',
+    //             description: 'Gekke jongen.'
+    //           }]
     //       }
     //     ],
-    //     home_village: 'San Fransisco',
-    //     village_currently_living: 'Mars'
+    //     home_village: 'Lutjebroek',
+    //     village_currently_living: 'Mexico'
     //   }
     // );
 

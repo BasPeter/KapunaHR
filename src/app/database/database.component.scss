@@ -1,3 +1,12 @@
 .documents {
   margin: 0 8px;
 }
+
+.menu-border*+ .cdk-overlay-pane {
+  border-radius: 32px;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+

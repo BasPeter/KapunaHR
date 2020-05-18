@@ -1,25 +1,49 @@
 <section fxLayout="column" fxLayoutGap="8px">
-  <mat-toolbar>
+  <mat-toolbar class="database-toolbar">
     Kapuna MaData
+
+    <div fxFlex class="fill-remaining-space"></div>
+
+    <button mat-flat-button color="primary" fxFlex="120px" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon svgIcon="database"></mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item fxLayoutAlign="space-between center" (click)="selectCollection('log')">
+        <span>Log</span>
+        <div fxFlex class="fill-remaining-space"></div>
+        <mat-icon class="no-margin" svgIcon="collection"></mat-icon>
+      </button>
+      <button mat-menu-item fxLayoutAlign="space-between center" (click)="selectCollection('patient')">
+        <span>Patient</span>
+        <div fxFlex class="fill-remaining-space"></div>
+        <mat-icon class="no-margin" svgIcon="collection"></mat-icon>
+      </button>
+    </mat-menu>
   </mat-toolbar>
 
   <div class="documents">
-    <ng-container *ngFor="let document of (databaseService.patientCollection?.documenten$ | async).rows">
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{document.doc.first_name + ' ' + document.doc.last_name}}
-          </mat-panel-title>
-          <mat-panel-description>
-            Patient Document
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+    <ng-container *ngFor="let document of (selectedCollection?.documenten$ | async)?.rows">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{document.doc.first_name + ' ' + document.doc.last_name}}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{selectedCollection.name}} Document
+            </mat-panel-description>
+          </mat-expansion-panel-header>
 
-        <pre>{{document.doc | json}}</pre>
+          <div fxLayout="column">
 
-      </mat-expansion-panel>
-    </mat-accordion>
+          <button mat-flat-button color="accent" (click)="openDialog(document.doc)">Edit document</button>
+
+          <pre>{{document.doc | json}}</pre>
+
+
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </ng-container>
   </div>
 </section>
