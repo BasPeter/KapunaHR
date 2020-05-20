@@ -13,7 +13,7 @@ import {MatDialog} from "@angular/material/dialog";
   templateUrl: './database.component.html',
   styleUrls: ['./database.component.scss']
 })
-export class DatabaseComponent implements OnInit{
+export class DatabaseComponent implements OnInit {
 
   selectedCollection: Database<any>;
   log: Observable<any>;
@@ -52,17 +52,10 @@ export class DatabaseComponent implements OnInit{
       data: {json}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe(document => {
+      if (document) {
+        this.selectedCollection.update(document);
+      }
     });
   }
-
-  saveJson(event: any) {
-    console.log(event);
-  }
-
-  // ngAfterViewInit(): void {
-  //   this.log = this.databaseService.log.documenten$;
-  // }
-
 }

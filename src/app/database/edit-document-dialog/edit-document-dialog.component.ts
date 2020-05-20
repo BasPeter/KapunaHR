@@ -7,16 +7,24 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
   templateUrl: './edit-document-dialog.component.html',
   styleUrls: ['./edit-document-dialog.component.scss']
 })
-export class EditDocumentDialogComponent {
+export class EditDocumentDialogComponent implements OnInit {
 
   public editorOptions: JsonEditorOptions;
-  json: string;
+
+  json: any;
+  editedJson = this.json;
   @ViewChild(JsonEditorComponent, { static: false }) editor: JsonEditorComponent;
+
+  documentCredetials: {_id: string, _rev: string} = {_id: '', _rev: ''};
 
   constructor(
     public dialogRef: MatDialogRef<EditDocumentDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.json = data.json;
+    @Inject(MAT_DIALOG_DATA) public data: any) {}
+
+  ngOnInit(): void {
+    this.json = this.stripCredentials(this.data.json);
+    this.editedJson = this.json;
+
     this.editorOptions = new JsonEditorOptions();
     this.editorOptions.mode = 'code';
   }
@@ -25,4 +33,27 @@ export class EditDocumentDialogComponent {
     this.dialogRef.close();
   }
 
+  stripCredentials(json: any): string {
+    this.documentCredetials._id = json._id;
+    this.documentCredetials._rev = json._rev;
+
+    delete json._id;
+    delete json._rev;
+
+    return json;
+  }
+
+  isSaveable(): boolean {
+    return this.editedJson !== this.json
+  }
+
+  changes(event = null) {
+    this.editedJson = this.editor.get();
+  }
+
+  addCredentials(json: any): string {
+    json._id = this.documentCredetials._id;
+    json._rev = this.documentCredetials._rev;
+    return json;
+  }
 }

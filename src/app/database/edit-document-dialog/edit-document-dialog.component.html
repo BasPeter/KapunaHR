@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutGap="8px">
-  <json-editor style="height: 500px" [options]="editorOptions" [data]="json"></json-editor>
+  <json-editor style="height: 500px" [options]="editorOptions" [data]="json" (change)="changes($event)"></json-editor>
   <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="8px">
     <button mat-flat-button color="accent" (click)="onNoClick()">Cancel</button>
-    <button mat-flat-button color="primary" [mat-dialog-close]="json">Save changes</button>
+    <button mat-flat-button color="primary" [mat-dialog-close]="addCredentials(editedJson)" [disabled]="!isSaveable()">Save changes</button>
   </div>
 </div>

@@ -36,7 +36,7 @@
 
           <div fxLayout="column">
 
-          <button mat-flat-button color="accent" (click)="openDialog(document.doc)">Edit document</button>
+          <button mat-flat-button color="accent" (click)="openDialog(document.doc)" *ngIf="selectedCollection.name !=='log'">Edit document</button>
 
           <pre>{{document.doc | json}}</pre>
 

@@ -44,7 +44,6 @@ export class Database<T> {
 
   create(document: T) {
     const doc = {_id: this.idFactory, ...document};
-    console.log(doc);
     this.db.put(doc)
       .then(response => {
         const message = {
@@ -59,6 +58,24 @@ export class Database<T> {
         console.log(err);
         this._messages$.next({type: 'error', message: err})
       })
+  }
+
+  update(document: T) {
+    this.db.put(document)
+      .then(response => {
+        const message = {
+          type: 'success',
+          mutation: 'update',
+          database: this.name,
+          message: response,
+        };
+        this._messages$.next(message)
+      })
+      .catch(err => {
+        console.log(err);
+        this._messages$.next({type: 'error', message: err})
+      })
+
   }
 }
 
