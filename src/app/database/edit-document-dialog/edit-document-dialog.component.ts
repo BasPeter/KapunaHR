@@ -5,7 +5,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 @Component({
   selector: 'app-edit-document-dialog',
   templateUrl: './edit-document-dialog.component.html',
-  styleUrls: ['./edit-document-dialog.component.css']
+  styleUrls: ['./edit-document-dialog.component.scss']
 })
 export class EditDocumentDialogComponent {
 

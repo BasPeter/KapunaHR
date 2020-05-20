@@ -13,7 +13,7 @@ import {MatDialog} from "@angular/material/dialog";
   templateUrl: './database.component.html',
   styleUrls: ['./database.component.scss']
 })
-export class DatabaseComponent {
+export class DatabaseComponent implements OnInit{
 
   selectedCollection: Database<any>;
   log: Observable<any>;
@@ -28,6 +28,10 @@ export class DatabaseComponent {
     iconRegistry.addSvgIcon(
       'collection',
       sanitizer.bypassSecurityTrustResourceUrl('./../../assets/icons/text-box-multiple-outline.svg'));
+  }
+
+  ngOnInit(): void {
+    this.selectCollection('patient');
   }
 
   selectCollection(collection: string) {
