@@ -1,4 +1,4 @@
-import {app, BrowserWindow, screen} from 'electron';
+import {app, BrowserWindow, screen, Menu, ipcMain} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -11,6 +11,60 @@ function createWindow(): BrowserWindow {
 
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
+
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'Menu',
+      submenu: [
+        {role: "about"},
+        {type: "separator"},
+        {
+          label: 'Quit',
+          accelerator: 'CmdOrCtrl+Q',
+          click() {
+            app.quit();
+          }
+        }
+      ]
+    },
+    {
+      label: 'View',
+      submenu: [
+        {
+          label: 'Reload',
+          accelerator: 'CmdOrCtrl+R',
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.reload()
+          }
+        },
+        {
+          label: 'Toggle Developer Tools',
+          accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+          click(item, focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.toggleDevTools()
+          }
+        }
+      ]
+    },
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Create backup',
+          click() {
+            createBackup();
+          }
+        },
+        {
+          label: 'Import backup',
+          click() {
+            importBackup();
+          }
+        }
+      ]
+    }
+  ]);
+  Menu.setApplicationMenu(menu);
 
   // Create the browser window.
   win = new BrowserWindow({
@@ -45,9 +99,10 @@ function createWindow(): BrowserWindow {
       slashes: true
     }));
     db.loadURL(url.format({
-      pathname: path.join(__dirname, 'dist/index.html/#/database'),
+      pathname: path.join(__dirname, 'dist/index.html'),
       protocol: 'file:',
-      slashes: true
+      slashes: true,
+      hash: '/database'
     }));
   }
 
@@ -96,4 +151,11 @@ try {
 } catch (e) {
   // Catch Error
   // throw e;
+}
+
+function createBackup() {
+  db.webContents.send('create-backup')
+}
+function importBackup() {
+  db.webContents.send('import-backup')
 }

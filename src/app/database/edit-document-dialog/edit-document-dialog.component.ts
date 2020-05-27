@@ -13,16 +13,17 @@ export class EditDocumentDialogComponent implements OnInit {
 
   json: any;
   editedJson = this.json;
-  @ViewChild(JsonEditorComponent, { static: false }) editor: JsonEditorComponent;
+  @ViewChild(JsonEditorComponent, {static: false}) editor: JsonEditorComponent;
 
-  documentCredetials: {_id: string, _rev: string} = {_id: '', _rev: ''};
+  documentCredetials: { _id: string, _rev: string } = {_id: '', _rev: ''};
 
   constructor(
     public dialogRef: MatDialogRef<EditDocumentDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {}
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
 
   ngOnInit(): void {
-    this.json = this.stripCredentials(this.data.json);
+    this.json = this.data.mode === 'edit' ? this.stripCredentials(this.data.json) : '';
     this.editedJson = this.json;
 
     this.editorOptions = new JsonEditorOptions();
@@ -52,8 +53,10 @@ export class EditDocumentDialogComponent implements OnInit {
   }
 
   addCredentials(json: any): string {
-    json._id = this.documentCredetials._id;
-    json._rev = this.documentCredetials._rev;
-    return json;
+    if (this.data.mode === 'edit') {
+      json._id = this.documentCredetials._id;
+      json._rev = this.documentCredetials._rev;
+    }
+      return json;
   }
 }

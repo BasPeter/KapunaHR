@@ -1,13 +1,16 @@
-// @ts-ignore
 import PouchDB from 'pouchdb';
+
+var replicationStream = require('pouchdb-replication-stream/dist/pouchdb.replication-stream.min.js');
+PouchDB.plugin(replicationStream.plugin);
+(<any>PouchDB).adapter('writableStream', replicationStream.adapters.writableStream);
+
 import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {ErrorMessage, SuccesMessage} from "../database-models/Messages";
-import {first, map} from "rxjs/operators";
+import {ErrorMessage, Mutation, SuccesMessage} from "../database-models/Messages";
 
 export class Database<T> {
 
   name: string;
-  db: any;
+  db: PouchDB.Database;
 
   private _messages$: Subject<SuccesMessage | ErrorMessage> = new Subject();
   get messages$(): Observable<any> {
@@ -48,7 +51,7 @@ export class Database<T> {
       .then(response => {
         const message = {
           type: 'success',
-          mutation: 'create',
+          mutation: Mutation.CREATE,
           database: this.name,
           message: response,
         };
@@ -65,7 +68,7 @@ export class Database<T> {
       .then(response => {
         const message = {
           type: 'success',
-          mutation: 'update',
+          mutation: Mutation.UPDATE,
           database: this.name,
           message: response,
         };
@@ -75,7 +78,6 @@ export class Database<T> {
         console.log(err);
         this._messages$.next({type: 'error', message: err})
       })
-
   }
 }
 

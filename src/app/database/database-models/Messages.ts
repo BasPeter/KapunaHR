@@ -1,6 +1,6 @@
 export interface SuccesMessage {
   type: string,
-  mutation: 'create' | 'delete'
+  mutation: Mutation,
   database: string,
   message: {
     ok: boolean,
@@ -18,4 +18,10 @@ export interface ErrorMessage {
     id: string,
     docId: string
   },
+}
+
+export enum Mutation {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete'
 }

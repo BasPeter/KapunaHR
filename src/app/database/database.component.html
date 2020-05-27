@@ -1,10 +1,12 @@
 <section fxLayout="column" fxLayoutGap="8px">
   <mat-toolbar class="database-toolbar">
     Kapuna MaData
+    <span class="collection-name">{{selectedCollection.name}}</span>
 
     <div fxFlex class="fill-remaining-space"></div>
 
-    <button mat-flat-button color="primary" fxFlex="120px" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <button mat-flat-button color="primary" fxFlex="120px" [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu">
       <mat-icon svgIcon="database"></mat-icon>
     </button>
     <mat-menu #menu="matMenu">
@@ -21,24 +23,47 @@
     </mat-menu>
   </mat-toolbar>
 
+  <div class="add-entry">
+    <button mat-button fxFlex (click)="openDialog('', 'add')">Add new entry</button>
+  </div>
+
   <div class="documents">
     <ng-container *ngFor="let document of (selectedCollection?.documenten$ | async)?.rows">
       <mat-accordion>
         <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{document.doc.first_name + ' ' + document.doc.last_name}}
+          <mat-expansion-panel-header [ngClass]="{'error-message-header': document.doc.type === 'error'}">
+            <mat-panel-title fxFlex="50%">
+              <ng-container *ngIf="selectedCollection.name === 'patientCollection'">
+                {{document.doc.first_name + ' ' + document.doc.last_name}}
+              </ng-container>
+
+              <ng-container *ngIf="selectedCollection.name === 'log'">
+                <ng-container *ngIf="document.doc.type === 'success'; else error">
+                  {{document.doc.mutation + ' ' + document.doc.database}}
+                </ng-container>
+                <ng-template #error>
+                  {{document.doc.message.status + ' ' + document.doc.message.name}}
+                </ng-template>
+              </ng-container>
+
             </mat-panel-title>
             <mat-panel-description>
-              {{selectedCollection.name}} Document
+              <ng-container *ngIf="selectedCollection.name === 'log'; else collectionName">
+                >>timestamp<<
+              </ng-container>
+              <ng-template #collectionName>
+                {{selectedCollection.name}} Document
+              </ng-template>
             </mat-panel-description>
           </mat-expansion-panel-header>
 
           <div fxLayout="column">
 
-          <button mat-flat-button color="accent" (click)="openDialog(document.doc)" *ngIf="selectedCollection.name !=='log'">Edit document</button>
+            <button mat-flat-button color="accent" (click)="openDialog(document.doc, 'edit')"
+                    *ngIf="selectedCollection.name !=='log'">Edit document
+            </button>
 
-          <pre>{{document.doc | json}}</pre>
+            <pre>{{document.doc | json}}</pre>
 
 
           </div>
